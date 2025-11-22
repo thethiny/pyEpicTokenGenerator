@@ -89,14 +89,13 @@ class EpicAuthClient:
 
     @classmethod
     def get_token_from_response(cls, response):
-        response.raise_for_status()
         data = response.json()
         
         error = data.get("error")
         if error:
             error_description = data.get("error_description", "No description provided")
             if error == "scope_consent_required":
-                error_description = " If this is a game or a service then the user should launch it at least once."
+                error_description += " If this is a game or a service then the user should launch it at least once."
             raise Exception(f"Error obtaining token: {error} - {error_description}")
 
         access_token = data.get("access_token")
